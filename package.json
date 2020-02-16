@@ -4,11 +4,13 @@
   "description": "Natours Api - Node / Express / Mongo",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start:dev": "nodemon server.js",
+    "start:prod": "cross-env NODE_ENV=production nodemon server.js"
   },
   "author": "Joni Aguero",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "morgan": "^1.9.1"
   },
