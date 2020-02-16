@@ -1,12 +1,14 @@
 const fs = require('fs');
+const morgan = require('morgan');
 const express = require('express');
 const app = express();
 
-app.use(express.json())
+app.use(morgan('dev'));
+app.use(express.json());
 
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours.json`));
 
-app.get('/api/v1/tours', (req, res) => {
+const getTours = (req, res) => {
   res.status(200).json({
     status: 'success',
     results: tours.length,
@@ -14,9 +16,9 @@ app.get('/api/v1/tours', (req, res) => {
       tours
     }
   })
-})
+};
 
-app.get('/api/v1/tours/:id', (req, res) => {
+const getTourById = (req, res) => {
   const tour = tours.find(el => el.id === req.params.id)
   if(!tour) {
     return res.status(404).json({
@@ -32,9 +34,9 @@ app.get('/api/v1/tours/:id', (req, res) => {
       tour
     }
   })
-})
+};
 
-app.patch('/api/v1/tours/:id', (req, res) => {
+const patchTour = (req, res) => {
   const tour = tours.find(el => el.id === req.params.id)
   if(!tour) {
     return res.status(404).json({
@@ -50,9 +52,9 @@ app.patch('/api/v1/tours/:id', (req, res) => {
       tour
     }
   })
-})
+};
 
-app.delete('/api/v1/tours/:id', (req, res) => {
+const deleteTour = (req, res) => {
   const tour = tours.find(el => el.id === req.params.id)
   if(!tour) {
     return res.status(404).json({
@@ -68,25 +70,31 @@ app.delete('/api/v1/tours/:id', (req, res) => {
       tour
     }
   })
-})
+};
 
-app.post('/api/v1/tours', (req, res) => {
-
+const createTour = (req, res) => {
   const newId = tours.length + 1;
   const newTour = Object.assign({ id: newId }, req.body);
-
   tours.push(newTour);
   fs.writeFile(`${__dirname}/dev-data/data/tours.json`, JSON.stringify(tours), err => {
     res.status
   })
-  
   res.status(200).json({
     status: 'success',
     tour: newTour
   })
-})
+};
+
+app.route('/api/v1/tours')
+  .get(getTours)
+  .post(createTour)
+
+app.route('/api/v1/tours/:id')
+  .get(getTourById)
+  .patch(patchTour)
+  .delete(deleteTour)
 
 const port = 3000;
 app.listen(port, () => {
   console.log(`Running on port: ${port}...`)
-})
+});
