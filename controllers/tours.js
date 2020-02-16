@@ -12,15 +12,6 @@ const getTours = (req, res) => {
 };
 
 const getTourById = (req, res) => {
-  const tour = tours.find(el => el.id === req.params.id)
-  if(!tour) {
-    return res.status(404).json({
-      status: 'Error',
-      data: {
-        tour: 'Tour not found'
-      }
-    })
-  }
   res.status(200).json({
     status: 'success',
     data: {
@@ -30,15 +21,6 @@ const getTourById = (req, res) => {
 };
 
 const patchTour = (req, res) => {
-  const tour = tours.find(el => el.id === req.params.id)
-  if(!tour) {
-    return res.status(404).json({
-      status: 'Error',
-      data: {
-        tour: 'Tour not found'
-      }
-    })
-  }
   res.status(200).json({
     status: 'success',
     data: {
@@ -48,15 +30,6 @@ const patchTour = (req, res) => {
 };
 
 const deleteTour = (req, res) => {
-  const tour = tours.find(el => el.id === req.params.id)
-  if(!tour) {
-    return res.status(404).json({
-      status: 'Error',
-      data: {
-        tour: 'Tour not found'
-      }
-    })
-  }
   res.status(200).json({
     status: 'success',
     data: {
@@ -78,10 +51,24 @@ const createTour = (req, res) => {
   })
 };
 
+const checkIfExists = (req, res, next, val) => {
+  const tour = tours.find(el => el.id === val);
+  if(!tour) {
+    return res.status(404).json({
+      status: 'Error',
+      data: {
+        tour: 'Invalid ID'
+      }
+    })
+  }
+  next();
+};
+
 module.exports = {
   getTours,
   getTourById,
   patchTour,
   deleteTour,
-  createTour
+  createTour,
+  checkIfExists
 }

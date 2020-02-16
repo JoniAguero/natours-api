@@ -8,15 +8,6 @@ const getUsers = (req, res) => {
 };
 
 const getUserById = (req, res) => {
-  const tour = tours.find(el => el.id === req.params.id)
-  if(!tour) {
-    return res.status(404).json({
-      status: 'Error',
-      data: {
-        tour: 'User not found'
-      }
-    })
-  }
   res.status(200).json({
     status: 'success',
     data: {
@@ -26,15 +17,6 @@ const getUserById = (req, res) => {
 };
 
 const patchUser = (req, res) => {
-  const tour = tours.find(el => el.id === req.params.id)
-  if(!tour) {
-    return res.status(404).json({
-      status: 'Error',
-      data: {
-        tour: 'User not found'
-      }
-    })
-  }
   res.status(200).json({
     status: 'success',
     data: {
@@ -44,15 +26,6 @@ const patchUser = (req, res) => {
 };
 
 const deleteUser = (req, res) => {
-  const tour = tours.find(el => el.id === req.params.id)
-  if(!tour) {
-    return res.status(404).json({
-      status: 'Error',
-      data: {
-        tour: 'User not found'
-      }
-    })
-  }
   res.status(200).json({
     status: 'success',
     data: {
@@ -74,10 +47,24 @@ const createUser = (req, res) => {
   })
 };
 
+const checkIfExists = (req, res, next) => {
+  const user = users.find(el => el.id === req.params.id)
+  if(!user) {
+    return res.status(404).json({
+      status: 'Error',
+      data: {
+        user: 'Invalid ID'
+      }
+    })
+  }
+  next();
+};
+
 module.exports = {
   getUsers,
   getUserById,
   patchUser,
   deleteUser,
-  createUser
+  createUser,
+  checkIfExists
 }
