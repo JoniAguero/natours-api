@@ -18,9 +18,52 @@ app.get('/api/v1/tours', (req, res) => {
 
 app.get('/api/v1/tours/:id', (req, res) => {
   const tour = tours.find(el => el.id === req.params.id)
+  if(!tour) {
+    return res.status(404).json({
+      status: 'Error',
+      data: {
+        tour: 'Tour not found'
+      }
+    })
+  }
   res.status(200).json({
     status: 'success',
-    results: tours.length,
+    data: {
+      tour
+    }
+  })
+})
+
+app.patch('/api/v1/tours/:id', (req, res) => {
+  const tour = tours.find(el => el.id === req.params.id)
+  if(!tour) {
+    return res.status(404).json({
+      status: 'Error',
+      data: {
+        tour: 'Tour not found'
+      }
+    })
+  }
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour
+    }
+  })
+})
+
+app.delete('/api/v1/tours/:id', (req, res) => {
+  const tour = tours.find(el => el.id === req.params.id)
+  if(!tour) {
+    return res.status(404).json({
+      status: 'Error',
+      data: {
+        tour: 'Tour not found'
+      }
+    })
+  }
+  res.status(200).json({
+    status: 'success',
     data: {
       tour
     }
