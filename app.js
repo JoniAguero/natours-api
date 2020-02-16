@@ -16,13 +16,24 @@ app.get('/api/v1/tours', (req, res) => {
   })
 })
 
+app.get('/api/v1/tours/:id', (req, res) => {
+  const tour = tours.find(el => el.id === req.params.id)
+  res.status(200).json({
+    status: 'success',
+    results: tours.length,
+    data: {
+      tour
+    }
+  })
+})
+
 app.post('/api/v1/tours', (req, res) => {
 
   const newId = tours.length + 1;
   const newTour = Object.assign({ id: newId }, req.body);
 
   tours.push(newTour);
-  fs.writeFile(`${__dirname}/dev-data/data/tours-simple.json`, JSON.stringify(tours), err => {
+  fs.writeFile(`${__dirname}/dev-data/data/tours.json`, JSON.stringify(tours), err => {
     res.status
   })
   
