@@ -2,12 +2,9 @@ const fs = require('fs');
 const express = require('express');
 const app = express();
 
-const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours.json`));
+app.use(express.json())
 
-app.get('/', (req, res) => {
-  res.status(200)
-  res.json({message: 'Hi from the server side'})
-})
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours.json`));
 
 app.get('/api/v1/tours', (req, res) => {
   res.status(200).json({
@@ -16,6 +13,22 @@ app.get('/api/v1/tours', (req, res) => {
     data: {
       tours
     }
+  })
+})
+
+app.post('/api/v1/tours', (req, res) => {
+
+  const newId = tours.length + 1;
+  const newTour = Object.assign({ id: newId }, req.body);
+
+  tours.push(newTour);
+  fs.writeFile(`${__dirname}/dev-data/data/tours-simple.json`, JSON.stringify(tours), err => {
+    res.status
+  })
+  
+  res.status(200).json({
+    status: 'success',
+    tour: newTour
   })
 })
 
