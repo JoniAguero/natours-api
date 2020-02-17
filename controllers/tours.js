@@ -1,67 +1,65 @@
-const fs = require('fs');
-const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours.json`));
+const Tour = require('../models/tour.model');
 
-const getTours = (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    results: tours.length,
-    data: {
-      tours
-    }
-  })
+const getTours = async (req, res) => {
+  try {
+    const Tours = await Tour.find();
+    res.status(200).json({
+      status: 'success',
+      results: Tours.length,
+      Tours
+    })
+    
+  } catch (error) {
+    res.status(400).json({
+      status: 'error',
+      error
+    })
+  }
 };
 
-const getTourById = (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour
-    }
-  })
+const getTourById = async (req, res) => {
+  try {
+    const TourSelected = await Tour.findById(req.params.id);
+    res.status(200).json({
+      status: 'success',
+      TourSelected
+    })
+    
+  } catch (error) {
+    res.status(400).json({
+      status: 'error',
+      error
+    })
+  }
 };
 
 const patchTour = (req, res) => {
   res.status(200).json({
     status: 'success',
-    data: {
-      tour
-    }
+    
   })
 };
 
 const deleteTour = (req, res) => {
   res.status(200).json({
     status: 'success',
-    data: {
-      tour
-    }
+    
   })
 };
 
-const createTour = (req, res) => {
-  const newId = tours.length + 1;
-  const newTour = Object.assign({ id: newId }, req.body);
-  tours.push(newTour);
-  fs.writeFile(`${__dirname}/../dev-data/data/tours.json`, JSON.stringify(tours), err => {
-    res.status
-  })
-  res.status(200).json({
-    status: 'success',
-    tour: newTour
-  })
-};
-
-const checkIfExists = (req, res, next, val) => {
-  const tour = tours.find(el => el.id === val);
-  if(!tour) {
-    return res.status(404).json({
-      status: 'Error',
-      data: {
-        tour: 'Invalid ID'
-      }
+const createTour = async (req, res) => {
+  try {
+    const newTour = await Tour.create(req.body);
+    res.status(200).json({
+      status: 'success',
+      tour: newTour
+    })
+  } catch (error) {
+    res.status(400).json({
+      status: 'error',
+      error
     })
   }
-  next();
 };
 
 module.exports = {
@@ -69,6 +67,5 @@ module.exports = {
   getTourById,
   patchTour,
   deleteTour,
-  createTour,
-  checkIfExists
+  createTour
 }
