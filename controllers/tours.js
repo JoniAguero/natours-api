@@ -52,11 +52,20 @@ const patchTour = async (req, res) => {
   }
 };
 
-const deleteTour = (req, res) => {
-  res.status(200).json({
-    status: 'success',
+const deleteTour = async (req, res) => {
+  try {
+    const tour = await Tour.findByIdAndDelete(req.params.id);
+    res.status(200).json({
+      status: 'success',
+      tour
+    })
     
-  })
+  } catch (error) {
+    res.status(400).json({
+      status: 'error',
+      error
+    })
+  }
 };
 
 const createTour = async (req, res) => {
