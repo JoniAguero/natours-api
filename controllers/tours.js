@@ -40,6 +40,11 @@ const getTours = async (req, res) => {
 
     query = query.skip(skip).limit(limit);
 
+    if(req.query.page) {
+      const lengthTours = await Tour.countDocuments();
+      if(skip > lengthTours) throw new Error('Limit superated')
+    }
+
     // Execute Query
     const tours = await query;
 
@@ -123,10 +128,18 @@ const createTour = async (req, res) => {
   }
 };
 
+const top5Cheap = (req, res, next) => {
+  req.query.limit = '5';
+  req.query.sort = '-ratingsAverage,price';
+  req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
+  next();
+}
+
 module.exports = {
   getTours,
   getTourById,
   patchTour,
   deleteTour,
-  createTour
+  createTour,
+  top5Cheap
 }
