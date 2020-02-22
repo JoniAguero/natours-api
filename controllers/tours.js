@@ -100,11 +100,13 @@ const getTourStats = async (req, res) => {
       },
       {
         $group: {
-          _id: null,
-          avgRating: { $avg: '$ratingAverage' },
-          avgPice:   { $avg: '$price' },
-          minPrice:  { $min: '$price' },
-          maxPrice:  { $max: '$price' }
+          _id: '$difficulty',
+          numTours:    { $sum: 1},
+          numRatings:  { $sum: '$ratingQuantity'},
+          avgRating:   { $avg: '$ratingAverage' },
+          avgPice:     { $avg: '$price' },
+          minPrice:    { $min: '$price' },
+          maxPrice:    { $max: '$price' }
         }
       }
     ]);
