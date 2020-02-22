@@ -7,6 +7,8 @@ const controller = require('../controllers/tours');
 router.route('/top-5-cheap')
   .get(controller.top5Cheap, controller.getTours)
 
+  router.route('/tours-stats')
+  .get(controller.getTourStats)
 
 router.route('/')
   .get(controller.getTours)
