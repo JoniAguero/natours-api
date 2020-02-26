@@ -4,6 +4,7 @@ const express = require('express');
 const AppError = require('./utils/appError');
 const errorHandler = require('./utils/errorHandler');
 
+const authRouter = require('./routes/auth');
 const toursRouter = require('./routes/tours');
 const usersRouter = require('./routes/users');
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
 
 // ROUTES
+app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/tours', toursRouter);
 app.use('/api/v1/users', usersRouter);
 
