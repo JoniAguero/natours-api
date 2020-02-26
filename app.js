@@ -23,12 +23,6 @@ app.use('/api/v1/users', usersRouter);
 
 app.all('*', (req, res, next) => {
 
-  // Creamos AppError para actuar cómo middleware
-
-  // const err = new Error(`Can't find ${req.originalUrl} on this server!`)
-  // err.status = 'fail';
-  // err.statusCode = 404;
-
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 
 });
