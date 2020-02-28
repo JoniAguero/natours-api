@@ -20,6 +20,11 @@ module.exports = (err, req, res, next) => {
     fn(new AppError(message, 400));
   }
 
+  const handleJWTError = (error, fn) => {
+    const message = `Invalid token. Please log in again!`;
+    fn(new AppError(message, 401));
+  }
+
   const errorDev = (error) => {
     res.status(error.statusCode).json({
       status: error.status,
@@ -51,6 +56,8 @@ module.exports = (err, req, res, next) => {
       handleDuplicateFieldsDB(error, fn)
     } else if(error.name === 'ValidationError') {
       handleValidationErrorDB(error, fn);
+    } else if(error.name === 'JsonWebTokenError') {
+      handleJWTError(error, fn);
     }
   }
 
