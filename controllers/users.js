@@ -56,12 +56,17 @@ const updateCurrentUser = catchAsync(async (req, res, next) => {
     ))
   }
 
-  // 2) Update user document
+  // 2) Filtered out unwanted fields names that are not allowed to be updated
   const filteredBody = filterObj(req.body, 'name', 'email');
+
+  // 3) Update user document
   const updateUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {new: true, runValidators: true});
 
   res.status(200).json({
-    status: 'sucess'
+    status: 'sucess',
+    data: {
+      user: updateUser
+    }
   })
 
 });
