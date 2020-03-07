@@ -15,4 +15,7 @@ router.route('/:id')
   router.route('/update-current-user')
   .patch(authController.protect, controller.updateCurrentUser)
 
+  router.route('/delete-current-user')
+  .delete(authController.protect, controller.inactiveCurrentUser)
+
 module.exports = router;

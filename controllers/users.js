@@ -71,12 +71,20 @@ const updateCurrentUser = catchAsync(async (req, res, next) => {
 
 });
 
+const inactiveCurrentUser = catchAsync(async (req, res, next) => {
+  await User.findByIdAndUpdate(req.user.id, {active: false});
 
+  res.status(204).json({
+    status: 'sucess',
+    data: null
+  })
+})
 
 module.exports = {
   getUsers,
   getUserById,
   patchUser,
   deleteUser,
-  updateCurrentUser
+  updateCurrentUser,
+  inactiveCurrentUser
 }
