@@ -12,6 +12,8 @@ const errorHandler = require('./utils/errorHandler');
 const authRouter = require('./routes/auth');
 const toursRouter = require('./routes/tours');
 const usersRouter = require('./routes/users');
+const reviewsRouter = require('./routes/reviews');
+
 
 const app = express();
 
@@ -54,6 +56,8 @@ app.use(express.static(`${__dirname}/public`));
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/tours', toursRouter);
 app.use('/api/v1/users', usersRouter);
+app.use('/api/v1/reviews', reviewsRouter);
+
 
 app.all('*', (req, res, next) => {
 
