@@ -97,7 +97,12 @@ const tourSchema = new mongoose.Schema({
     description: String,
     day: Number
   }],
-  guides: Array
+  guides: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User'
+    }
+  ]
 },
 {
   toJSON: { virtuals: true },
