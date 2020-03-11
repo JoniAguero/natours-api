@@ -1,8 +1,14 @@
 const express = require('express');
-const authController = require('../controllers/auth');
+// const authController = require('../controllers/auth');
+const reviewsRouter = require('./reviews');
+
+
 
 const router = express.Router();
 const controller = require('../controllers/tours');
+
+// Use reviews-routes
+router.use('/:tourId/reviews', reviewsRouter);
 
 // Example 5 tours cheaper
 router.route('/top-5-cheap')
@@ -23,8 +29,8 @@ router.route('/:id')
   .get(controller.getTourById)
   .patch(controller.patchTour)
   .delete(
-    authController.protect,
-    authController.restricTo('admin', 'lead-guide'),
+    // authController.protect,
+    // authController.restricTo('admin', 'lead-guide'),
     controller.deleteTour
   )
 
