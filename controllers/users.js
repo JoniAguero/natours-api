@@ -1,6 +1,7 @@
 const AppError = require('../utils/appError');
 const User = require('../models/user.model');
 const catchAsync = require('../utils/catchAsync');
+const factory = require('./handlerFactory');
 
 const filterObj = (body, ...fields) => {
   const newBody = {};
@@ -10,7 +11,7 @@ const filterObj = (body, ...fields) => {
   return newBody;
 }
 
-const getUsers = (req, res) => {
+exports.getUsers = (req, res) => {
   res.status(200).json({
     status: 'success',
     data: {
@@ -19,7 +20,7 @@ const getUsers = (req, res) => {
   })
 };
 
-const getUserById = (req, res) => {
+exports.getUserById = (req, res) => {
   res.status(200).json({
     status: 'success',
     data: {
@@ -28,7 +29,7 @@ const getUserById = (req, res) => {
   })
 };
 
-const patchUser = (req, res) => {
+exports.patchUser = (req, res) => {
   res.status(200).json({
     status: 'success',
     data: {
@@ -37,16 +38,9 @@ const patchUser = (req, res) => {
   })
 };
 
-const deleteUser = (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    data: {
-      message: 'TO-DO'
-    }
-  })
-};
+exports.deleteUser = factory.delete(User);
 
-const updateCurrentUser = catchAsync(async (req, res, next) => {
+exports.updateCurrentUser = catchAsync(async (req, res, next) => {
 
   // 1) Create error if user POSTs password data
   if(req.body.password || req.body.passwordConfirm) {
@@ -71,7 +65,7 @@ const updateCurrentUser = catchAsync(async (req, res, next) => {
 
 });
 
-const inactiveCurrentUser = catchAsync(async (req, res, next) => {
+exports.inactiveCurrentUser = catchAsync(async (req, res, next) => {
   await User.findByIdAndUpdate(req.user.id, {active: false});
 
   res.status(204).json({
@@ -79,12 +73,3 @@ const inactiveCurrentUser = catchAsync(async (req, res, next) => {
     data: null
   })
 })
-
-module.exports = {
-  getUsers,
-  getUserById,
-  patchUser,
-  deleteUser,
-  updateCurrentUser,
-  inactiveCurrentUser
-}
