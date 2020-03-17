@@ -6,7 +6,6 @@ const User = require('../models/user.model');
 const catchAsync = require('../utils/catchAsync');
 const sendEmail = require('../utils/email');
 
-
 const signToken = id => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES
@@ -39,7 +38,7 @@ const createSendToken = (user, statusCode, res) => {
   })
 }
 
-const signup = catchAsync(async (req, res, next) => {
+exports.signup = catchAsync(async (req, res, next) => {
 
   const newUser = await User.create({
     name: req.body.name,
@@ -51,7 +50,7 @@ const signup = catchAsync(async (req, res, next) => {
   createSendToken(newUser, 201, res);
 });
 
-const login = catchAsync(async (req, res, next) => {
+exports.login = catchAsync(async (req, res, next) => {
 
   const { email, password } = req.body;
 
@@ -72,7 +71,7 @@ const login = catchAsync(async (req, res, next) => {
 
 });
 
-const protect = catchAsync(async (req, res, next) => {
+exports.protect = catchAsync(async (req, res, next) => {
 
   let token;
 
@@ -115,7 +114,7 @@ const protect = catchAsync(async (req, res, next) => {
 
 });
 
-const restricTo = (...roles) => {
+exports.restricTo = (...roles) => {
 
   return (req, res, next) => {
     if(!roles.includes(req.user.role)) {
@@ -125,7 +124,7 @@ const restricTo = (...roles) => {
   }
 };
 
-const forgotPassword = catchAsync(async (req, res, next) => {
+exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   // 1) Get user based on POST email
   const user = await User.findOne({ email: req.body.email })
@@ -166,7 +165,7 @@ const forgotPassword = catchAsync(async (req, res, next) => {
 
 });
 
-const resetPassword = catchAsync(async (req, res, next) => {
+exports.resetPassword = catchAsync(async (req, res, next) => {
 
   // 1) Get user based on the token
   const hashedToken = crypto
@@ -197,7 +196,7 @@ const resetPassword = catchAsync(async (req, res, next) => {
 
 });
 
-const updatePassword = catchAsync(async (req, res, next) => {
+exports.updatePassword = catchAsync(async (req, res, next) => {
   // 1) Get user from collection
   const user = await User.findById(req.user.id).select('+password');
   // 2) Check if posted currend password is correct
@@ -212,12 +211,7 @@ const updatePassword = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, res);
 });
 
-module.exports = {
-  signup,
-  login,
-  protect,
-  restricTo,
-  forgotPassword,
-  resetPassword,
-  updatePassword
-};
+exports.me = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
+}
