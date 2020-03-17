@@ -40,6 +40,8 @@ exports.patchUser = (req, res) => {
 
 exports.deleteUser = factory.delete(User);
 
+exports.updateUser = factory.update(User);
+
 exports.updateCurrentUser = catchAsync(async (req, res, next) => {
 
   // 1) Create error if user POSTs password data
