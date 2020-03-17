@@ -4,7 +4,11 @@ const router = express.Router();
 const controller = require('../controllers/users');
 const authController = require('../controllers/auth');
 
-router.get('/me', controller.protect, authController.me, controller.getUserById)
+// Protect all routes after this middleware
+router.use(authController.protect)
+// 
+
+router.get('/me', authController.me, controller.getUserById)
 
 router.route('/')
   .get(controller.getUsers)
@@ -15,15 +19,9 @@ router.route('/:id')
   .delete(controller.deleteUser)
 
 router.route('/update-current-user')
-  .patch(
-    authController.protect,
-    controller.updateCurrentUser
-  )
+  .patch(controller.updateCurrentUser)
 
 router.route('/delete-current-user')
-  .delete(
-    authController.protect,
-    controller.inactiveCurrentUser
-  )
+  .delete(controller.inactiveCurrentUser) 
 
 module.exports = router;
