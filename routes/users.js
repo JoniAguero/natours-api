@@ -9,7 +9,7 @@ router.route('/')
 
 router.route('/:id')
   .get(controller.getUserById)
-  .patch(controller.patchUser)
+  .patch(controller.updateUser)
   .delete(controller.deleteUser)
 
 router.route('/update-current-user')
@@ -23,7 +23,5 @@ router.route('/delete-current-user')
     authController.protect,
     controller.inactiveCurrentUser
   )
-
-
 
 module.exports = router;

@@ -12,4 +12,13 @@ router.route('/')
     controller.setTourUsersId,
     controller.createReview)
 
+router.route('/:id')
+  .get(controller.getReviewById)
+  .patch(controller.updateReview)
+  .delete(
+    // authController.protect,
+    // authController.restricTo('admin', 'lead-guide'),
+    controller.deleteReview
+  )
+
 module.exports = router;

@@ -11,23 +11,9 @@ const filterObj = (body, ...fields) => {
   return newBody;
 }
 
-exports.getUsers = (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    data: {
-      message: 'TO-DO'
-    }
-  })
-};
+exports.getUsers = factory.getAll(User);
 
-exports.getUserById = (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    data: {
-      message: 'TO-DO'
-    }
-  })
-};
+exports.getUserById =  factory.getById(User);
 
 exports.deleteUser = factory.delete(User);
 
