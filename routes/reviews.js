@@ -9,6 +9,7 @@ router.route('/')
   .post(
     // authController.protect,
     // authController.restricTo('user'),
+    controller.setTourUsersId,
     controller.createReview)
 
 module.exports = router;

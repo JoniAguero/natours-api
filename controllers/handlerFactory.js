@@ -29,3 +29,13 @@ exports.update = Model => catchAsync(async (req, res, next) => {
   });
 
 });
+
+exports.create = Model => catchAsync(async (req, res) => {
+
+  const newDocument = await Model.create(req.body);
+  res.status(200).json({
+    status: 'success',
+    tour: newDocument
+  });
+  
+});

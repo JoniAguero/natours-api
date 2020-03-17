@@ -29,15 +29,6 @@ exports.getUserById = (req, res) => {
   })
 };
 
-exports.patchUser = (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    data: {
-      message: 'TO-DO'
-    }
-  })
-};
-
 exports.deleteUser = factory.delete(User);
 
 exports.updateUser = factory.update(User);
